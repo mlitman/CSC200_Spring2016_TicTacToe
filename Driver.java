@@ -10,18 +10,33 @@ public class Driver
 	public static void main(String[] args)
 	{
 		Driver.displayBoard();
-		System.out.print("Please enter a row:");
-		int row = Driver.getIntFromUser();
-		System.out.print("Please enter a column:");
-		int column = Driver.getIntFromUser();
-		Driver.makeMove(row, column, 'X');
-		Driver.displayBoard();
+		Driver.playGame();
 	}
+	
 	static void playGame()
 	{
 		//toggle between the X and O player asking each one to make
 		//moves indefinitely.  The new board should be shown after each
 		//move
+		char currMove = 'X';
+		while(true)
+		{
+			System.out.print("Please enter a row:");
+			int row = Driver.getIntFromUser();
+			System.out.print("Please enter a column:");
+			int column = Driver.getIntFromUser();
+			Driver.makeMove(row, column, currMove);
+			Driver.displayBoard();
+			
+			if(currMove == 'X')
+			{
+				currMove = 'O';
+			}
+			else
+			{
+				currMove = 'X';
+			}
+		}
 	}
 	
 	static void makeMove(int row, int column, char move)
@@ -58,7 +73,7 @@ public class Driver
 			}
 			else
 			{
-				System.out.print("_O_");
+				System.out.print("_O_\t");
 			}
 		}
 		System.out.println("");
