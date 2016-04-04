@@ -13,6 +13,42 @@ public class Driver
 		Driver.playGame();
 	}
 	
+	//checks the current state of the board to see if there was a winner
+	static boolean isWinner()
+	{
+		//rows
+		boolean XwinnerRow1 = row1[0] == 'X' && row1[1] == 'X' && row1[2] == 'X';
+		boolean OwinnerRow1 = row1[0] == 'O' && row1[1] == 'O' && row1[2] == 'O';
+		boolean XwinnerRow2 = row2[0] == 'X' && row2[1] == 'X' && row2[2] == 'X';
+		boolean OwinnerRow2 = row2[0] == 'O' && row2[1] == 'O' && row2[2] == 'O';
+		boolean XwinnerRow3 = row3[0] == 'X' && row3[1] == 'X' && row3[2] == 'X';
+		boolean OwinnerRow3 = row3[0] == 'O' && row3[1] == 'O' && row3[2] == 'O';
+		
+		//cols
+		boolean XwinnerCol1 = row1[0] == 'X' && row2[0] == 'X' && row3[0] == 'X';
+		boolean OwinnerCol1 = row1[0] == 'O' && row2[0] == 'O' && row3[0] == 'O';
+		boolean XwinnerCol2 = row1[1] == 'X' && row2[1] == 'X' && row3[1] == 'X';
+		boolean OwinnerCol2 = row1[1] == 'O' && row2[1] == 'O' && row3[1] == 'O';
+		boolean XwinnerCol3 = row1[2] == 'X' && row2[2] == 'X' && row3[2] == 'X';
+		boolean OwinnerCol3 = row1[2] == 'O' && row2[2] == 'O' && row3[2] == 'O';
+		
+		
+		//diags
+		boolean XwinnerDiag1 = row1[0] == 'X' && row2[1] == 'X' && row3[2] == 'X';
+		boolean OwinnerDiag1 = row1[0] == 'O' && row2[1] == 'O' && row3[2] == 'O';
+		boolean XwinnerDiag2 = row1[2] == 'X' && row2[1] == 'X' && row3[0] == 'X';
+		boolean OwinnerDiag2 = row1[2] == 'O' && row2[1] == 'O' && row3[0] == 'O';
+		
+		return XwinnerRow1 || OwinnerRow1 ||
+				XwinnerRow2 || OwinnerRow2 ||
+				XwinnerRow3 || OwinnerRow3 ||
+				XwinnerCol1 || OwinnerCol1 ||
+				XwinnerCol2 || OwinnerCol2 ||
+				XwinnerCol3 || OwinnerCol3 ||
+				XwinnerDiag1 || OwinnerDiag1 ||
+				XwinnerDiag2 || OwinnerDiag2;
+	}
+	
 	static void playGame()
 	{
 		//toggle between the X and O player asking each one to make
@@ -25,22 +61,38 @@ public class Driver
 			int row = Driver.getIntFromUser();
 			System.out.print("Please enter a column:");
 			int column = Driver.getIntFromUser();
-			Driver.makeMove(row, column, currMove);
-			Driver.displayBoard();
-			
-			if(currMove == 'X')
+			if(Driver.makeMove(row, column, currMove))
 			{
-				currMove = 'O';
+				//was there a winner?
+				if(Driver.isWinner())
+				{
+					System.out.println(currMove + " is the Winner!!!");
+					return;
+				}
+				else
+				{
+					if(currMove == 'X')
+					{
+						currMove = 'O';
+					}
+					else
+					{
+						currMove = 'X';
+					}			
+				}
 			}
 			else
 			{
-				currMove = 'X';
+				System.out.println("Illegal Move!!!");
 			}
+			Driver.displayBoard();
 		}
 	}
 	
-	static void makeMove(int row, int column, char move)
+	//returns true if a move was successfully made, and false otherwise
+	static boolean makeMove(int row, int column, char move)
 	{
+		//determine which row array we are talking about
 		char[] theRow = row1;
 		if(row == 2)
 		{
@@ -50,7 +102,16 @@ public class Driver
 		{
 			theRow = row3;
 		}
-		theRow[column-1] = move;
+		
+		if(theRow[column-1] == '_')
+		{
+			theRow[column-1] = move;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
 	static int getIntFromUser()
@@ -145,6 +206,10 @@ public class Driver
 		//boolean operators
 		 * == equivalence
 		 * != not equal to
+		 * &&  and
+		 * ||  or
+		 * & bitwise-and-operator
+		 * | bitwise-or-operator
 		 * 
  */
  
